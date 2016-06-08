@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kingdee.ebank.dao.TradeRecordItemDao">
+	<cache  eviction="LRU" flushInterval="60000" size="1024" readOnly="true" />  
+ 
+	<resultMap id="tradeRecordItemResultMap" type="com.kingdee.ebank.vo.TradeRecordItem">  
+	  <result property="id" column="id"/>
+	  <result property="recordId" column="record_id"/>
+	  <result property="itemType" column="item_type"/> 
+	  <result property="itemStatus" column="item_status"/> 
+	  <result property="itemOrderno" column="item_orderno"/> 
+	  <result property="itemAmount" column="item_amount"/> 
+	  <result property="itemCurrency" column="item_currency"/>
+	  <result property="itemOutTradeNo" column="item_out_trade_no"/>
+	  <result property="payBankCode" column="pay_bank_code"/> 
+	  <result property="payAccount" column="pay_account"/> 
+	  <result property="payAccountName" column="pay_account_name"/> 
+	  <result property="receiveBankCode" column="receive_bank_code"/> 
+	  <result property="receiveAccount" column="receive_account"/> 
+	  <result property="receiveAccountName" column="receive_account_name"/> 
+	  
+	  <result property="channelStatus" column="channel_status"/> 
+	  <result property="channelAmount" column="channel_amount"/> 
+	  <result property="channelCurrency" column="channel_currency"/> 
+	  <result property="channelTradeNo" column="channel_trade_no"/> 
+	  <result property="channelTradeDate" column="channel_trade_date"/> 
+	  <result property="channelDescription" column="channel_description"/> 
+	  
+	  <result property="createDate" column="create_date"/> 
+	  <result property="creator" column="creator"/> 
+	  <result property="remark" column="remark"/>  
+	</resultMap>
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.kingdee.ebank.vo.TradeRecordItem">
+		insert into t_trade_record_item
+		  (
+		  record_id,
+		  item_type,
+		  item_status,
+		  item_orderno,
+		  item_out_trade_no,
+		  item_amount,
+		  item_currency,
+		  
+		  pay_bank_code,
+		  pay_account,
+		  pay_account_name,
+		  receive_bank_code,
+		  receive_account,
+		  receive_account_name,
+		  
+		  channel_status,
+		  channel_amount,
+		  channel_currency,
+		  channel_trade_no,
+		  channel_trade_date,
+		  channel_description,
+
+		  create_date,
+		  creator,
+		  remark)
+		values
+		  (#{recordId,jdbcType=VARCHAR},
+		  #{itemType,jdbcType=VARCHAR},
+		  #{itemStatus,jdbcType=VARCHAR},
+		  #{itemOrderno,jdbcType=VARCHAR},
+		  #{itemOutTradeNo,jdbcType=VARCHAR},
+		  #{itemAmount,jdbcType=VARCHAR},
+		  #{itemCurrency,jdbcType=VARCHAR},
+		  
+		  #{payBankCode,jdbcType=VARCHAR},
+		  #{payAccount,jdbcType=VARCHAR},
+		  #{payAccountName,jdbcType=VARCHAR},
+		  #{receiveBankCode,jdbcType=VARCHAR},
+		  #{receiveAccount,jdbcType=VARCHAR},
+		  #{receiveAccountName,jdbcType=VARCHAR},
+		 
+		  #{channelStatus,jdbcType=VARCHAR},
+		  #{channelAmount,jdbcType=VARCHAR},
+		  #{channelCurrency,jdbcType=VARCHAR},
+		  #{channelTradeNo,jdbcType=VARCHAR},
+		  #{channelTradeDate,jdbcType=VARCHAR},
+		  #{channelDescription,jdbcType=VARCHAR},
+		  
+		  #{createDate,jdbcType=VARCHAR},
+		  #{creator,jdbcType=VARCHAR},
+		  #{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+		 <selectKey resultType="long" keyProperty="id" order="AFTER">  
+        	SELECT
+        	LAST_INSERT_ID()  
+    	</selectKey>  
+	    insert into t_trade_record_item
+		  (
+		  record_id,
+		  item_type,
+		  item_status,
+		  item_orderno,
+		  item_out_trade_no,
+		  item_amount,
+		  item_currency,
+		  
+		  pay_bank_code,
+		  pay_account,
+		  pay_account_name,
+		  receive_bank_code,
+		  receive_account,
+		  receive_account_name,
+		  
+		  channel_status,
+		  channel_amount,
+		  channel_currency,
+		  channel_trade_no,
+		  channel_trade_date,
+		  channel_description,
+
+		  create_date,
+		  creator,
+		  remark)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+		  (#{item.recordId,jdbcType=VARCHAR},
+		  #{item.itemType,jdbcType=VARCHAR},
+		  #{item.itemStatus,jdbcType=VARCHAR},
+		  #{item.itemOrderno,jdbcType=VARCHAR},
+		  #{item.itemOutTradeNo,jdbcType=VARCHAR},
+		  #{item.itemAmount,jdbcType=VARCHAR},
+		  #{item.itemCurrency,jdbcType=VARCHAR},
+		  
+		  #{item.payBankCode,jdbcType=VARCHAR},
+		  #{item.payAccount,jdbcType=VARCHAR},
+		  #{item.payAccountName,jdbcType=VARCHAR},
+		  #{item.receiveBankCode,jdbcType=VARCHAR},
+		  #{item.receiveAccount,jdbcType=VARCHAR},
+		  #{item.receiveAccountName,jdbcType=VARCHAR},
+		 
+		  #{item.channelStatus,jdbcType=VARCHAR},
+		  #{item.channelAmount,jdbcType=VARCHAR},
+		  #{item.channelCurrency,jdbcType=VARCHAR},
+		  #{item.channelTradeNo,jdbcType=VARCHAR},
+		  #{item.channelTradeDate,jdbcType=VARCHAR},
+		  #{item.channelDescription,jdbcType=VARCHAR},
+		  
+		  #{item.createDate,jdbcType=VARCHAR},
+		  #{item.creator,jdbcType=VARCHAR},
+		  #{item.remark,jdbcType=VARCHAR})
+		   </foreach> 
+	</insert>
+	
+	<select id="findByItemOrderno" resultMap="tradeRecordItemResultMap">
+		select * from t_trade_record_item a where a.item_orderno = #{itemOrderno}
+	</select>
+	
+	<select id="findByOutTradeNo" resultMap="tradeRecordItemResultMap">
+		select * from t_trade_record_item a where a.item_out_trade_no = #{itemOutTradeNo}
+	</select>
+	
+	<update id="updateTradeRecordItemByid" parameterType="com.kingdee.ebank.vo.TradeRecordItem">
+	    update t_trade_record_item
+	    set 
+	    item_status = #{itemStatus},
+	    channel_status = #{channelStatus},
+	    channel_amount = #{channelAmount},
+	    channel_currency = #{channelCurrency},
+	    channel_trade_no = #{channelTradeNo},
+	    channel_trade_date = #{channelTradeDate},
+	    channel_description = #{channelDescription}
+	    where id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!--<bean id="cmbcService" class="com.kingdee.ebank.cmbc.CmbcServiceImpl" />
+	<dubbo:service interface="com.kingdee.ebank.service.CmbcService" ref="cmbcService"  timeout="1200000"/>-->
+
+	<!-- Bank API Provider -->
+	<bean id="bankApiProvider" class="com.kingdee.ebank.bank.BankApiProvider">
+		<property name="services">
+			<map>
+				<entry key="cmbc_0000" value-ref="generationPayService" />
+				<entry key="cmbc_0001" value-ref="generationQueryService" />
+				<entry key="cmbc_0002" value-ref="cmbcBuckleTradeService" />
+				<entry key="cmbc_0003" value-ref="cmbcBuckleQueryService" />
+				<entry key="cmbc_0004" value-ref="crossBuckleTradeService" />
+				<entry key="cmbc_0005" value-ref="crossBuckleQueryService" />
+				<entry key="cmbc_0006" value-ref="authorizedEnterService" />
+				<entry key="cmbc_0007" value-ref="authorizedQueryService" />
+				<entry key="pab_0000" value-ref="pabAccountBalanceQueryService" />
+				<entry key="pab_0001" value-ref="pabSingleCapitalTradeService" />
+				<entry key="pab_0002" value-ref="pabBatchCapitalTradeService" />
+				<entry key="pab_0003" value-ref="pabSingleCapitalQueryService" />
+				<entry key="pab_0004" value-ref="pabBatchCapitalQueryService" />
+				<entry key="pab_0007" value-ref="pabBuckleCapitalTradeService" />
+				<entry key="pab_0008" value-ref="pabBuckleCapitalQueryService" />
+			</map>
+		</property>
+	</bean>
+	<dubbo:service interface="com.kingdee.ebank.provider.Provider" ref="bankApiProvider" timeout="1200000"/>
+	
+	<bean id="SpringContextUtil" class="com.kingdee.ebank.util.SpringContextUtil" scope="singleton" lazy-init="false"/>
+
+    <!-- 加载配置属性文件 -->
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:db.properties" />
+	
+	<context:component-scan base-package="com.kingdee.ebank"></context:component-scan>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.kingdee.ebank.dao" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<property name="mapperLocations" value="classpath:mappings/*.xml"></property>
+	</bean>
+
+	<!--事务配置，com.kingdee.internet.sms.service包下所有类的所有方法受到事务管理 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<aop:config>
+		<aop:pointcut id="serviceMethod"
+			expression="execution(* com.kingdee.ebank.services.*Impl.*(..))" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
+	</aop:config>
+
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" isolation="DEFAULT" propagation="REQUIRED"
+				read-only="false" timeout="1800000" />
+		</tx:attributes>
+	</tx:advice>
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/ebank" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+
+</beans>

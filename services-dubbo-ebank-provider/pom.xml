@@ -1,0 +1,261 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.kingdee.ebank</groupId>
+  <artifactId>services-dubbo-ebank-provider</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>services-dubbo-ebank-provider</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <commons-lang3.version>3.1</commons-lang3.version>
+	<dubbo_version>2.5.3</dubbo_version>
+	<spring_version>4.1.6.RELEASE</spring_version>
+	<aspectjweaver_version>1.8.6</aspectjweaver_version>
+	<mybatis_version>3.3.0</mybatis_version>
+	<mybatis_spring>1.2.2</mybatis_spring>
+	<log4j_version>1.2.17</log4j_version>
+	<commons_codec_version>1.10</commons_codec_version>
+	<commons_dbcp_version>1.4</commons_dbcp_version>
+	<fastjson_version>1.1.39</fastjson_version>
+	<jackson.version>2.2.1</jackson.version>
+	<!-- jdbc driver setting -->
+	<mysql.driver.version>5.1.30</mysql.driver.version>
+
+  </properties>
+
+  <dependencies>
+ 	 <dependency>
+	    <groupId>com.google.code.gson</groupId>
+	    <artifactId>gson</artifactId>
+	    <version>2.3.1</version>
+	 </dependency>
+     <dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>${commons-lang3.version}</version>
+	</dependency>
+		
+    <!-- TEST start -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<!-- TEST end -->
+	
+	<dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
+    </dependency>
+	
+	<dependency>
+      <groupId>com.kingdee.ebank</groupId>
+      <artifactId>services-dubbo-ebank-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>${log4j_version}</version>
+	</dependency>
+	
+    <dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>dubbo</artifactId>
+		<version>${dubbo_version}</version>
+		<exclusions>
+			<exclusion>
+				<artifactId>spring</artifactId>
+				<groupId>org.springframework</groupId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+
+	<!-- spring and rely -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-orm</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${spring_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>${aspectjweaver_version}</version>
+	</dependency>
+
+	<!-- mybatis and rely -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+		<version>${mybatis_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>${mybatis_spring}</version>
+	</dependency>
+		<dependency>
+		<groupId>commons-dbcp</groupId>
+		<artifactId>commons-dbcp</artifactId>
+		<version>${commons_dbcp_version}</version>
+	</dependency>
+	
+	<!-- jdbc driver -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>${mysql.driver.version}</version>
+		<scope>runtime</scope>
+	</dependency>
+		
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>fastjson</artifactId>
+		<version>${fastjson_version}</version>
+	</dependency>
+	
+	<!-- jackson json -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-annotations</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.module</groupId>
+		<artifactId>jackson-module-jaxb-annotations</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+		
+	
+	<dependency>
+		<groupId>commons-codec</groupId>
+		<artifactId>commons-codec</artifactId>
+		<version>${commons_codec_version}</version>
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.apache.zookeeper</groupId>
+		<artifactId>zookeeper</artifactId>
+		<version>3.4.6</version>
+	</dependency>
+	<dependency>
+		<groupId>com.github.sgroschupf</groupId>
+		<artifactId>zkclient</artifactId>
+		<version>0.1</version>
+	</dependency>
+	
+	<dependency>   
+      <groupId>dom4j</groupId>    
+      <artifactId>dom4j</artifactId>    
+      <version>1.6</version>   
+    </dependency>
+    
+    <dependency>
+    	<groupId>commons-httpclient</groupId>
+		<artifactId>commons-httpclient</artifactId>
+		<version>3.1</version> 
+    </dependency>
+    
+    <dependency>
+	    <groupId>org.apache.httpcomponents</groupId>
+	    <artifactId>httpclient</artifactId>
+	    <version>4.4-alpha1</version>
+	</dependency>
+
+    <dependency>
+	    <groupId>commons-net</groupId>
+	    <artifactId>commons-net</artifactId>
+	    <version>3.3</version>
+	</dependency>
+
+  </dependencies>
+  
+  
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<directory>src/main/assembly/dev</directory>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<properties>
+				<directory>src/main/assembly/prod</directory>
+			</properties>
+		</profile>
+	</profiles>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>src/main/assembly/assembly.xml</descriptor>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
